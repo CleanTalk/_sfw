@@ -11,8 +11,11 @@
   "license": "GPL-3.0-or-later",
   "require": {
     "cleantalk/apbct-installer": "*",
-    "cleantalk/dependency-container": "*",
-    "cleantalk/variables": "*"
+    "cleantalk/mloader": "*",
+    "cleantalk/variables": "*",
+    "cleantalk/cleaner": "*",
+    "cleantalk/queue": "*",
+    "cleantalk/db": "*"
   },
   "config": {
     "allow-plugins": {

@@ -217,7 +217,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 		$id   = md5($ip . $this->module_name);
 		$time = time();
 
-		$this->db->prepare(
+		$this->db->prepareAndExecute(
 			"INSERT INTO " . $this->db__table__logs . "
             SET
                 id = '$id',
@@ -252,7 +252,6 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 				substr(Server::get('HTTP_HOST') . Server::get('REQUEST_URI'), 0, 100),
 			)
 		);
-		$this->db->execute($this->db->getQuery());
 	}
 
 	public function actionsForDenied($result)

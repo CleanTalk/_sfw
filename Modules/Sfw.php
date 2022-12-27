@@ -689,7 +689,8 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 				$exclusions[] = '127.0.0.1';
 				// And delete all 127.0.0.1 entries for local hosts
 			} else {
-				$delete_res = $db->execute('DELETE FROM ' . $db__table__data . ' WHERE network = ' . ip2long('127.0.0.1') . ';');
+                $sql_res = $db->execute('DELETE FROM ' . $db__table__data . ' WHERE network = ' . ip2long('127.0.0.1') . ';', true);
+                $delete_res = $db->getAffectedRows();
 				if ($delete_res > 0) {
 					$fw_stats->expected_networks_count -= $delete_res;
 					Firewall::saveFwStats($fw_stats);
@@ -707,7 +708,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 		}
 
 		if ($exclusions) {
-			$sql_result = $db->execute(substr($query, 0, -1) . ';');
+			$sql_result = $db->execute(substr($query, 0, -1) . ';', true);
 
 			return $sql_result === false
 				? array('error' => 'COULD_NOT_WRITE_TO_DB 4: ' . $db->getLastError())

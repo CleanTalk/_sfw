@@ -15,7 +15,7 @@
     "cleantalk/variables": "*",
     "cleantalk/cleaner": "*",
     "cleantalk/queue": "*",
-    "cleantalk/db": "*",
+    "cleantalk/db": "^1.4",
     "cleantalk/dns": "^1.0",
     "cleantalk/api": "^1.0",
     "cleantalk/cron": "^1.0",

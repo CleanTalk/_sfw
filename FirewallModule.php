@@ -191,21 +191,4 @@ abstract class FirewallModule {
 			header("HTTP/1.0 403 Forbidden");
 		}
 	}
-
-    /**
-     * This is a placeholder for WP translation function.
-     * For compatibility with any CMS.
-     *
-     * @param $string
-     * @param $text_domain
-     * @return mixed
-     */
-    public function __( $string, $text_domain )
-    {
-        if( function_exists( '__' ) ) {
-            return __( $string, $text_domain );
-        }
-        return $string;
-    }
-
 }

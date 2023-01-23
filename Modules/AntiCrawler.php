@@ -10,7 +10,7 @@ class AntiCrawler
 {
     public static function update($file_path_ua)
     {
-        /** @var \Cleantalk\Common\Helper\Helper $helper_class */
+        /** @var Helper $helper_class */
         $helper_class = Mloader::get('Helper');
 
         /** @var \Cleantalk\Common\Db\Db $db_class */
@@ -86,7 +86,7 @@ class AntiCrawler
 
     public static function directUpdate($useragents)
     {
-        /** @var \Cleantalk\Common\Helper\Helper $helper_class */
+        /** @var Helper $helper_class */
         $helper_class = Mloader::get('Helper');
 
         /** @var \Cleantalk\Common\Db\Db $db_class */

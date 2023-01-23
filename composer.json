@@ -15,12 +15,13 @@
     "cleantalk/variables": "*",
     "cleantalk/cleaner": "*",
     "cleantalk/queue": "*",
-    "cleantalk/db": "^1.5",
-    "cleantalk/dns": "^1.0",
-    "cleantalk/api": "^1.0",
-    "cleantalk/cron": "^1.0",
-    "cleantalk/remote-calls": "^1.0",
-    "cleantalk/storage-handler": "^1.0"
+    "cleantalk/db": "*",
+    "cleantalk/dns": "*",
+    "cleantalk/api": "*",
+    "cleantalk/cron": "*",
+    "cleantalk/remote-calls": "*",
+    "cleantalk/storage-handler": "*",
+    "cleantalk/helper": "*"
   },
   "config": {
     "allow-plugins": {

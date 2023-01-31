@@ -13,6 +13,7 @@ namespace Cleantalk\Common\Firewall;
  * @since 2.49
  */
 
+use Cleantalk\Common\Helper\Helper;
 use Cleantalk\Common\Mloader\Mloader;
 use Cleantalk\Common\Variables\Get;
 
@@ -125,7 +126,9 @@ abstract class FirewallModule {
     public function ipAppendAdditional(& $ips)
 	{
 		$this->real_ip = isset($ips['real']) ? $ips['real'] : null;
-        $helper_class = $this->helper;
+
+        /** @var Helper $helper_class */
+        $helper_class = Mloader::get('Helper');
 
 		if( Get::get('sfw_test_ip') && $helper_class::ipValidate( Get::get('sfw_test_ip') ) !== false ) {
             $this->ip_array['sfw_test'] = Get::get( 'sfw_test_ip' );

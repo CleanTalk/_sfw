@@ -395,6 +395,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 			$replaces['{DEBUG}'] = isset($debug) ? $debug : '';
 
 			foreach ($replaces as $place_holder => $replace) {
+				$replace = is_null($replace) ? '' : $replace;
 				$this->sfw_die_page = str_replace($place_holder, $replace, $this->sfw_die_page);
 			}
 		}
@@ -422,6 +423,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 		);
 
 		foreach ($replaces as $place_holder => $replace) {
+			$replace = is_null($replace) ? '' : $replace;
 			$this->sfw_die_page = str_replace($place_holder, $replace, $this->sfw_die_page);
 		}
 

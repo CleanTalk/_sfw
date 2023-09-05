@@ -128,7 +128,7 @@ class FirewallUpdater
 		$queue->addStage([self::class, 'getMultifiles']);
 
 		$cron = new \Cleantalk\Common\Cron\Cron();
-		$cron->addTask('sfw_update_checker', 'apbct_sfw_update__checker', 15, null. $this->api_key);
+        $cron->addTask('sfw_update_checker', '\Cleantalk\Common\Firewall\FirewallUpdater::apbct_sfw_update__checker', 15, null. $this->api_key);
 
 		return $rc_class::perform(
 			'sfw_update',
@@ -678,7 +678,8 @@ class FirewallUpdater
 		$cron_class = Mloader::get('Cron');
 
 		$cron = new $cron_class();
-		$cron->updateTask('sfw_update', 'apbct_sfw_update__init', $fw_stats->update_period);
+        $sfw_update_handler = defined('APBCT_CRON_HANDLER__SFW_UPDATE') ? APBCT_CRON_HANDLER__SFW_UPDATE : 'apbct_sfw_update__init';
+        $cron->updateTask('sfw_update', $sfw_update_handler, $fw_stats->update_period);
 		$cron->removeTask('sfw_update_checker');
 
 		self::removeUpdDir($fw_stats->updating_folder);
@@ -754,7 +755,7 @@ class FirewallUpdater
 		}
 	}
 
-	function apbct_sfw_update__checker($api_key)
+	public static function apbct_sfw_update__checker($api_key)
 	{
 		$queue = new \Cleantalk\Common\Queue\Queue($api_key);
 		if ( count($queue->queue['stages']) ) {
@@ -914,7 +915,8 @@ class FirewallUpdater
 		 */
 		$cron = new \Cleantalk\Common\Cron\Cron();
 		$cron->removeTask('sfw_update_checker');
-		$cron->updateTask('sfw_update', 'apbct_sfw_update__init', $fw_stats->update_period);
+        $sfw_update_handler = defined('APBCT_CRON_HANDLER__SFW_UPDATE') ? APBCT_CRON_HANDLER__SFW_UPDATE : 'apbct_sfw_update__init';
+        $cron->updateTask('sfw_update', $sfw_update_handler, $fw_stats->update_period);
 
 		/**
 		 * Remove _temp table

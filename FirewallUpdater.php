@@ -128,7 +128,7 @@ class FirewallUpdater
 		$queue->addStage([self::class, 'getMultifiles']);
 
 		$cron = new \Cleantalk\Common\Cron\Cron();
-        $cron->addTask('sfw_update_checker', '\Cleantalk\Common\Firewall\FirewallUpdater::apbct_sfw_update__checker', 15, null. $this->api_key);
+        $cron->addTask('sfw_update_checker', '\Cleantalk\Common\Firewall\FirewallUpdater::apbct_sfw_update__checker', 15);
 
 		return $rc_class::perform(
 			'sfw_update',

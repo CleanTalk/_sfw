@@ -281,6 +281,7 @@ class FirewallUpdater
 						$urls[] = $value[0];
 					}
 
+                    $tries_for_download_again         = 3 + (int)(count($urls) / 20);
 					$fw_stats->update_percent = round(100 / count($urls), 2);
 					Firewall::saveFwStats($fw_stats);
 
@@ -288,7 +289,7 @@ class FirewallUpdater
 						'next_stage' => array(
 							'name'    => [self::class, 'downloadFiles'],
 							'args'    => $urls,
-							'is_last' => '0'
+                            'accepted_tries' => $tries_for_download_again
 						)
 					);
 				}

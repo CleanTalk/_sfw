@@ -58,8 +58,13 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 	{
 		parent::__construct($log_table, $data_table, $params);
 
-		$this->db__table__data = $data_table ?: null;
-		$this->db__table__logs = $log_table ?: null;
+        /** @var \Cleantalk\Common\Db\Db $db_class */
+        $db_class = Mloader::get('Db');
+        $db = $db_class::getInstance();
+        $this->db = $db;
+
+        $this->db__table__data = $db->prefix . $data_table ?: null;
+        $this->db__table__logs = $db->prefix . $log_table ?: null;
 
 		foreach ($params as $param_name => $param) {
 			$this->$param_name = isset($this->$param_name) ? $param : false;

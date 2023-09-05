@@ -126,12 +126,12 @@ class Firewall
 	public function __construct( $api_key, $log_table_name )
 	{
 		$this->helper         = Mloader::get('Helper');
-		$db_class = Mloader::get('Db');
+		$db_class             = Mloader::get('Db');
 		$this->db             = $db_class::getInstance();
 		$this->api            = Mloader::get('Api');
 
 	    $this->api_key        = $api_key;
-		$this->log_table_name = $log_table_name;
+		$this->log_table_name = $this->db->prefix . $log_table_name;
 		$this->debug          = (bool) Get::get('debug');
 		$this->ip_array       = $this->ipGet();
 	}

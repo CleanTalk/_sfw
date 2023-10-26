@@ -66,9 +66,9 @@ class FirewallUpdater
             }
             return $this->updateInit();
         } catch ( SfwUpdateException $e ) {
-            $this->SaveSFWUpdateError($e);
+            $this->saveSfwUpdateError($e);
         } catch ( SfwUpdateExit $e ) {
-            $this->LogSFWExit($e);
+            $this->logSfwExit($e);
         }
 
         return false;
@@ -143,7 +143,7 @@ class FirewallUpdater
         $cron = new \Cleantalk\Common\Cron\Cron();
         $cron->addTask(
             'sfw_update_checker',
-            '\Cleantalk\Common\Firewall\FirewallUpdater::apbct_sfw_update__checker',
+            '\Cleantalk\Common\Firewall\FirewallUpdater::apbctSfwUpdateChecker',
             15,
             null,
             [$this->api_key]
@@ -583,13 +583,13 @@ class FirewallUpdater
 
         return array(
             'next_stage' => array(
-                'name' => [self::class, 'endOfUpdate_renamingTables'],
+                'name' => [self::class, 'endOfUpdateRenamingTables'],
                 'accepted_tries' => 1
             )
         );
     }
 
-    public static function endOfUpdate_renamingTables($_api_key)
+    public static function endOfUpdateRenamingTables($_api_key)
     {
         $fw_stats = Firewall::getFwStats();
 
@@ -598,11 +598,11 @@ class FirewallUpdater
         $db_obj = $db_class::getInstance();
 
         if ( !$db_obj->isTableExists($db_obj->prefix . APBCT_TBL_FIREWALL_DATA) ) {
-            throw new SfwUpdateException('endOfUpdate_renamingTables: SFW main table does not exist');
+            throw new SfwUpdateException('endOfUpdateRenamingTables: SFW main table does not exist');
         }
 
         if ( !$db_obj->isTableExists($db_obj->prefix . APBCT_TBL_FIREWALL_DATA . '_temp') ) {
-            throw new SfwUpdateException('endOfUpdate_renamingTables: SFW temp table does not exist');
+            throw new SfwUpdateException('endOfUpdateRenamingTables: SFW temp table does not exist');
         }
 
         $fw_stats->update_mode = 1;
@@ -625,18 +625,18 @@ class FirewallUpdater
         Firewall::saveFwStats($fw_stats);
 
         if ( !empty($result['error']) ) {
-            throw new SfwUpdateException('endOfUpdate_renamingTables: ' . $result['error']);
+            throw new SfwUpdateException('endOfUpdateRenamingTables: ' . $result['error']);
         }
 
         return array(
             'next_stage' => array(
-                'name' => [self::class, 'endOfUpdate_checkingData'],
+                'name' => [self::class, 'endOfUpdateCheckingData'],
                 'accepted_tries' => 1
             )
         );
     }
 
-    public static function endOfUpdate_checkingData($_api_key)
+    public static function endOfUpdateCheckingData($_api_key)
     {
         $fw_stats = Firewall::getFwStats();
 
@@ -645,7 +645,7 @@ class FirewallUpdater
         $db_obj = $db_class::getInstance();
 
         if ( !$db_obj->isTableExists($db_obj->prefix . APBCT_TBL_FIREWALL_DATA) ) {
-            throw new SfwUpdateException('endOfUpdate_checkingData: SFW main table does not exist');
+            throw new SfwUpdateException('endOfUpdateCheckingData: SFW main table does not exist');
         }
 
         $entries = $db_obj->setQuery('')->getVar('SELECT COUNT(*) FROM ' . $db_obj->prefix . APBCT_TBL_FIREWALL_DATA);
@@ -655,7 +655,7 @@ class FirewallUpdater
          */
         if ( $entries != $fw_stats->expected_networks_count ) {
             throw new SfwUpdateException(
-                'endOfUpdate_checkingData: '
+                'endOfUpdateCheckingData: '
                 . 'The discrepancy between the amount of data received for the update and in the final table: '
                 . $db_obj->prefix . APBCT_TBL_FIREWALL_DATA
                 . '. RECEIVED: ' . $fw_stats->expected_networks_count
@@ -668,13 +668,13 @@ class FirewallUpdater
 
         return array(
             'next_stage' => array(
-                'name' => [self::class, 'endOfUpdate_updatingStats'],
+                'name' => [self::class, 'endOfUpdateUpdatingStats'],
                 'accepted_tries' => 1
             )
         );
     }
 
-    public static function endOfUpdate_updatingStats($_api_key, $is_direct_update = false)
+    public static function endOfUpdateUpdatingStats($_api_key, $is_direct_update = false)
     {
         $fw_stats = Firewall::getFwStats();
 
@@ -791,7 +791,7 @@ class FirewallUpdater
         }
     }
 
-    public static function apbct_sfw_update__checker($api_key)
+    public static function apbctSfwUpdateChecker($api_key)
     {
         $queue = new \Cleantalk\Common\Queue\Queue($api_key);
         if ( count($queue->queue['stages']) ) {
@@ -806,7 +806,7 @@ class FirewallUpdater
         return true;
     }
 
-    function directUpdate()
+    public function directUpdate()
     {
         // The Access key is empty
         if ( empty($this->api_key) ) {
@@ -848,11 +848,11 @@ class FirewallUpdater
                 return array('error' => 'DIRECT UPDATING CREATE TMP TABLE: ' . $result__creating_tmp_table['error']);
             }
 
-			/**
-			 * UPDATING UA LIST
-			 */
-			if ( $useragents ) {
-				$ua_result = \Cleantalk\Common\Firewall\Modules\AntiCrawler::directUpdate($useragents);
+            /**
+             * UPDATING UA LIST
+             */
+            if ( $useragents ) {
+                $ua_result = \Cleantalk\Common\Firewall\Modules\AntiCrawler::directUpdate($useragents);
 
                 if ( !empty($ua_result['error']) ) {
                     return array('error' => 'DIRECT UPDATING UA LIST: ' . $result['error']);
@@ -892,7 +892,7 @@ class FirewallUpdater
             /**
              * DELETING AND RENAMING THE TABLES
              */
-            $rename_tables_res = self::endOfUpdate_renamingTables('');
+            $rename_tables_res = self::endOfUpdateRenamingTables('');
             if ( !empty($rename_tables_res['error']) ) {
                 return array('error' => 'DIRECT UPDATING BLACK LIST: ' . $rename_tables_res['error']);
             }
@@ -900,7 +900,7 @@ class FirewallUpdater
             /**
              * CHECKING THE UPDATE
              */
-            $check_data_res = self::endOfUpdate_checkingData('');
+            $check_data_res = self::endOfUpdateCheckingData('');
             if ( !empty($check_data_res['error']) ) {
                 return array('error' => 'DIRECT UPDATING BLACK LIST: ' . $check_data_res['error']);
             }
@@ -908,7 +908,7 @@ class FirewallUpdater
             /**
              * WRITE UPDATING STATS
              */
-            $update_stats_res = self::endOfUpdate_updatingStats('', true);
+            $update_stats_res = self::endOfUpdateUpdatingStats('', true);
             if ( !empty($update_stats_res['error']) ) {
                 return array('error' => 'DIRECT UPDATING BLACK LIST: ' . $update_stats_res['error']);
             }
@@ -982,7 +982,7 @@ class FirewallUpdater
      * @param SfwUpdateException $e
      * @return void
      */
-    private function SaveSFWUpdateError(SfwUpdateException $e)
+    private function saveSfwUpdateError(SfwUpdateException $e)
     {
         $fw_stats = Firewall::getFwStats();
         $fw_stats->errors[] = $e->getMessage();
@@ -990,7 +990,13 @@ class FirewallUpdater
         error_log($e->getMessage());
     }
 
-    private function LogSFWExit(SfwUpdateExit $e)
+    /**
+     * Write to the stderr
+     *
+     * @param SfwUpdateExit $e
+     * @return void
+     */
+    private function logSfwExit(SfwUpdateExit $e)
     {
         if ( $this->debug ) {
             error_log($e->getMessage());

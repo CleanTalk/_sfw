@@ -333,9 +333,22 @@ class FirewallUpdater
 
         sleep(3);
 
-        //Reset keys
-        $urls = array_values($urls);
-        $results = $helper_class::httpMultiRequest($urls, $fw_stats->updating_folder);
+        $urls_array = array_chunk($urls, 18);
+        $results_array = [];
+
+        foreach ( $urls_array as $_urls ) {
+            //Reset keys
+            $_urls = array_values($_urls);
+            $results_array[] = $helper_class::httpMultiRequest(array_slice($_urls, 0, 50), $fw_stats->updating_folder);
+        }
+
+        $results = [];
+        foreach ($results_array as $result) {
+            foreach ( $result as $key => $value ) {
+                $results[$key] = $value;
+            }
+        }
+
         $count_urls = count($urls);
         $count_results = count($results);
 

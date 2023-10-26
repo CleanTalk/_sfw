@@ -132,6 +132,7 @@ class Firewall
     public function __construct($api_key, $log_table_name)
     {
         $this->helper = Mloader::get('Helper');
+        /** @var \Cleantalk\Common\Db\Db $db_class */
         $db_class = Mloader::get('Db');
         $this->db = $db_class::getInstance();
         $this->api = Mloader::get('Api');
@@ -414,8 +415,8 @@ class Firewall
     {
         $fw_stats = new FwStats();
         /** @var \Cleantalk\Common\StorageHandler\StorageHandler $storage_handler_class */
-        $storage_handler_class = Mloader::get('StorageHandler');
-        $stats = $storage_handler_class::getSetting(self::FW_STATS_SETTING_NAME);
+        $storage_handler_class = new (Mloader::get('StorageHandler'));
+        $stats = $storage_handler_class->getSetting(self::FW_STATS_SETTING_NAME);
         if ( $stats !== null ) {
             foreach ( $stats as $stat_key => $stat_val ) {
                 $fw_stats->$stat_key = $stat_val;
@@ -431,7 +432,7 @@ class Firewall
             $stats[$stat_key] = $stat_val;
         }
         /** @var \Cleantalk\Common\StorageHandler\StorageHandler $storage_handler_class */
-        $storage_handler_class = Mloader::get('StorageHandler');
-        return $storage_handler_class::saveSetting(self::FW_STATS_SETTING_NAME, $stats);
+        $storage_handler_class = new (Mloader::get('StorageHandler'));
+        return $storage_handler_class->saveSetting(self::FW_STATS_SETTING_NAME, $stats);
     }
 }

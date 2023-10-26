@@ -95,6 +95,16 @@ abstract class FirewallModule
     }
 
     /**
+     * @param $name
+     * @return mixed
+     * @psalm-taint-source input
+     */
+    public static function getVariable($name)
+    {
+        return Get::get($name);
+    }
+
+    /**
      * Use this method to execute main logic of the module.
      *
      * @return array  Array of the check results
@@ -130,9 +140,9 @@ abstract class FirewallModule
         /** @var Helper $helper_class */
         $helper_class = Mloader::get('Helper');
 
-        if ( Get::get('sfw_test_ip') && $helper_class::ipValidate(Get::get('sfw_test_ip')) !== false ) {
-            $this->ip_array['sfw_test'] = Get::get('sfw_test_ip');
-            $this->test_ip = Get::get('sfw_test_ip');
+        if ( static::getVariable('sfw_test_ip') && $helper_class::ipValidate(static::getVariable('sfw_test_ip')) !== false ) {
+            $this->ip_array['sfw_test'] = static::getVariable('sfw_test_ip');
+            $this->test_ip = static::getVariable('sfw_test_ip');
             $this->test = true;
         }
     }

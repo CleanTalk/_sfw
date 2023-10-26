@@ -12,21 +12,6 @@ use Cleantalk\Common\Variables\Server;
 class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 {
     public $module_name = 'SFW';
-    /*
-    protected $test;
-
-    // Additional params
-    private $sfw_counter = false;
-    protected $api_key = false;
-
-    private $data__cookies_type = false;
-    private $cookie_domain = false;
-
-
-
-    protected $real_ip;
-    protected $debug;
-    protected $debug_data = '';*/
 
     private $test_status;
     private $blocked_ips = array();
@@ -70,7 +55,17 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
             $this->$param_name = isset($this->$param_name) ? $param : false;
         }
 
-        $this->debug = (bool)Get::get('debug');
+        $this->debug = (bool)static::getVariable('debug');
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     * @psalm-taint-source input
+     */
+    public static function getVariable($name)
+    {
+        return Get::get($name);
     }
 
     /**
@@ -81,10 +76,10 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
         $this->real_ip = isset($ips['real']) ? $ips['real'] : null;
         $helper_class = $this->helper;
 
-        if ( Get::get('sfw_test_ip') ) {
-            if ( $helper_class::ipValidate(Get::get('sfw_test_ip')) !== false ) {
-                $ips['sfw_test'] = Get::get('sfw_test_ip');
-                $this->test_ip = Get::get('sfw_test_ip');
+        if ( static::getVariable('sfw_test_ip') ) {
+            if ( $helper_class::ipValidate(static::getVariable('sfw_test_ip')) !== false ) {
+                $ips['sfw_test'] = static::getVariable('sfw_test_ip');
+                $this->test_ip = htmlentities(static::getVariable('sfw_test_ip'), ENT_QUOTES);
                 $this->test = true;
             }
         }

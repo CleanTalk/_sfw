@@ -138,7 +138,7 @@ class Firewall
 
         $this->api_key = $api_key;
         $this->log_table_name = $this->db->prefix . $log_table_name;
-        $this->debug = (bool)Get::get('debug');
+        $this->debug = (bool)static::getVariable('debug');
         $this->ip_array = $this->ipGet();
     }
 

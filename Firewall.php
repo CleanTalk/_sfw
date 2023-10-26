@@ -143,6 +143,16 @@ class Firewall
     }
 
     /**
+     * @param $name
+     * @return mixed
+     * @psalm-taint-source input
+     */
+    public static function getVariable($name)
+    {
+        return Get::get($name);
+    }
+
+    /**
      * Loads the FireWall module to the array.
      * Factory method for configure instance of FirewallModule.
      * Not returns anything, the result is private storage of the modules.

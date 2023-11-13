@@ -140,6 +140,10 @@ class AntiCrawler
 
     private static function clearDataTable($db, $db__table__data)
     {
+        if ( ! $db->isTableExists() ) {
+            // @ToDo need to handle errors here
+            return;
+        }
         $db->execute("TRUNCATE TABLE {$db__table__data};");
         $db->setQuery("SELECT COUNT(*) as cnt FROM {$db__table__data};")->fetch(); // Check if it is clear
         if ( $db->result['cnt'] != 0 ) {

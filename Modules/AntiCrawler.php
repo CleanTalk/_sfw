@@ -140,7 +140,7 @@ class AntiCrawler
 
     private static function clearDataTable($db, $db__table__data)
     {
-        if ( ! $db->isTableExists() ) {
+        if ( ! $db->isTableExists($db__table__data) ) {
             // @ToDo need to handle errors here
             return;
         }

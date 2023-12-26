@@ -415,7 +415,8 @@ class Firewall
     {
         $fw_stats = new FwStats();
         /** @var \Cleantalk\Common\StorageHandler\StorageHandler $storage_handler_class */
-        $storage_handler_class = new (Mloader::get('StorageHandler'));
+        $storage_handler_class = Mloader::get('StorageHandler');
+        $storage_handler_class = new $storage_handler_class;
         $stats = $storage_handler_class->getSetting(self::FW_STATS_SETTING_NAME);
         if ( $stats !== null ) {
             foreach ( $stats as $stat_key => $stat_val ) {
@@ -432,7 +433,8 @@ class Firewall
             $stats[$stat_key] = $stat_val;
         }
         /** @var \Cleantalk\Common\StorageHandler\StorageHandler $storage_handler_class */
-        $storage_handler_class = new (Mloader::get('StorageHandler'));
+        $storage_handler_class = Mloader::get('StorageHandler');
+        $storage_handler_class = new $storage_handler_class;
         return $storage_handler_class->saveSetting(self::FW_STATS_SETTING_NAME, $stats);
     }
 }

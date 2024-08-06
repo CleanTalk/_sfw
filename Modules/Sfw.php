@@ -9,6 +9,7 @@ use Cleantalk\Common\Variables\Cookie;
 use Cleantalk\Common\Variables\Get;
 use Cleantalk\Common\Variables\Server;
 
+#[\AllowDynamicProperties]
 class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 {
     public $module_name = 'SFW';

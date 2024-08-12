@@ -1,3 +1,6 @@
+SpamFireWall is checking your browser and IP %s for spam bots
+SpamFireWall проверяет ваш браузер и IP %s на наличие спам-ботов
+
 To continue working with the web site, please make sure that you have enabled JavaScript.
 Для продолжения работы с веб-сайтом, пожалуйста, убедитесь, что вы включили JavaScript.
 
@@ -5,7 +8,7 @@ Please click the link below to pass the protection,
 Пожалуйста, нажмите на ссылку ниже, чтобы пройти защиту,
 
 Or you will be automatically redirected to the requested page after %d seconds.
-Или вы будете автоматически перенаправлены на запрашиваемую страницу через %d секунд.
+Или вы будете автоматически перенаправлены на запрашиваемую страницу через %d сек.
 
 This is the testing page for SpamFireWall
 Это тестовая страница SpamFireWall

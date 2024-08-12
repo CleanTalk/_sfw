@@ -305,7 +305,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
             $cookie_val = md5($result['ip'] . $this->api_key) . $status;
 
             $block_message = sprintf(
-                'SpamFireWall is checking your browser and IP %s for spam bots',
+                $this->localize->translate('SpamFireWall is checking your browser and IP %s for spam bots'),
                 '<a href="' . $result['ip'] . '" target="_blank">' . $result['ip'] . '</a>'
             );
 

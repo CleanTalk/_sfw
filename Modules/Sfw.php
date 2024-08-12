@@ -322,17 +322,17 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
             // Translation
             $replaces = array(
                 '{SFW_DIE_NOTICE_IP}' => $block_message,
-                '{SFW_DIE_MAKE_SURE_JS_ENABLED}' => 'To continue working with the web site, please make sure that you have enabled JavaScript.',
-                '{SFW_DIE_CLICK_TO_PASS}' => 'Please click the link below to pass the protection,',
+                '{SFW_DIE_MAKE_SURE_JS_ENABLED}' => $this->localize->translate('To continue working with the web site, please make sure that you have enabled JavaScript.'),
+                '{SFW_DIE_CLICK_TO_PASS}' => $this->localize->translate('Please click the link below to pass the protection,'),
                 '{SFW_DIE_YOU_WILL_BE_REDIRECTED}' => sprintf(
-                    'Or you will be automatically redirected to the requested page after %d seconds.',
+                    $this->localize->translate('Or you will be automatically redirected to the requested page after %d seconds.'),
                     3
                 ),
-                '{CLEANTALK_TITLE}' => ($this->test ? 'This is the testing page for SpamFireWall' : ''),
+                '{CLEANTALK_TITLE}' => ($this->test ? $this->localize->translate('This is the testing page for SpamFireWall') : ''),
                 '{REMOTE_ADDRESS}' => $result['ip'],
                 '{SERVICE_ID}' => $net_count,
                 '{HOST}' => $remote_calls_class::getSiteUrl(),
-                '{GENERATED}' => '<p>The page was generated at&nbsp;' . date('D, d M Y H:i:s') . '</p>',
+                '{GENERATED}' => '<p>' . $this->localize->translate('The page was generated at') . '&nbsp;' . date('D, d M Y H:i:s') . '</p>',
                 '{REQUEST_URI}' => $request_uri,
 
                 // Cookie
@@ -360,11 +360,11 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
              * Message about IP status
              */
             if ( $this->test ) {
-                $message_ip_status = 'IP in the common blacklist';
+                $message_ip_status = $this->localize->translate('IP in the common blacklist');
                 $message_ip_status_color = 'red';
 
                 if ( $this->test_status === 1 ) {
-                    $message_ip_status = 'IP in the whitelist';
+                    $message_ip_status = $this->localize->translate('IP in the whitelist');
                     $message_ip_status_color = 'green';
                 }
 
@@ -373,9 +373,9 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
 
             // Test
             if ( $this->test ) {
-                $replaces['{TEST_TITLE}'] = 'This is the testing page for SpamFireWall';
-                $replaces['{REAL_IP__HEADER}'] = 'Real IP:';
-                $replaces['{TEST_IP__HEADER}'] = 'Test IP:';
+                $replaces['{TEST_TITLE}'] = $this->localize->translate('This is the testing page for SpamFireWall');
+                $replaces['{REAL_IP__HEADER}'] = $this->localize->translate('Real IP:');
+                $replaces['{TEST_IP__HEADER}'] = $this->localize->translate('Test IP:');
                 $replaces['{TEST_IP}'] = $this->test_ip;
                 $replaces['{REAL_IP}'] = $this->real_ip;
             }

@@ -21,7 +21,8 @@
     "cleantalk/cron": "*",
     "cleantalk/remote-calls": "*",
     "cleantalk/storage-handler": "*",
-    "cleantalk/helper": "*"
+    "cleantalk/helper": "*",
+    "cleantalk/localize": "*"
   },
   "require-dev": {
     "vimeo/psalm": "^4.8",

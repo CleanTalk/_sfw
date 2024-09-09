@@ -157,13 +157,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
             }
             $needles = array_unique($needles);
 
-            $query = "SELECT
-				network, mask, status, source
-				FROM " . $this->db__table__data . "
-				WHERE network IN (" . implode(',', $needles) . ")
-				AND	network = " . $current_ip_v4 . " & mask 
-				AND " . rand(1, 100000) . "  
-				ORDER BY status DESC LIMIT 1";
+            $query = $this->db->sfwGetFromBlacklist($this->db__table__data, $needles, $current_ip_v4);
 
             $db_results = $this->db->fetchAll($query);
 
@@ -218,33 +212,10 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
      */
     public function updateLog($ip, $status, $network = 'NULL', $source = 'NULL')
     {
-        $id = md5($ip . $this->module_name);
-        $time = time();
+        $query = $this->db->getUpdateLogQuery($this->db__table__logs, $this->module_name, $status, $ip, $source);
 
         $this->db->prepareAndExecute(
-            "INSERT INTO " . $this->db__table__logs . "
-            SET
-                id = '$id',
-                ip = '$ip',
-                status = '$status',
-                all_entries = 1,
-                blocked_entries = " . (strpos($status, 'DENY') !== false ? 1 : 0) . ",
-                entries_timestamp = '" . $time . "',
-                ua_name = %s,
-                source = $source,
-                network = %s,
-                first_url = %s,
-                last_url = %s
-            ON DUPLICATE KEY
-            UPDATE
-                status = '$status',
-                source = $source,
-                all_entries = all_entries + 1,
-                blocked_entries = blocked_entries" . (strpos($status, 'DENY') !== false ? ' + 1' : '') . ",
-                entries_timestamp = '" . $time . "',
-                ua_name = %s,
-                network = %s,
-                last_url = %s",
+            $query,
             array(
                 Server::get('HTTP_USER_AGENT'),
                 $network,
@@ -683,7 +654,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
         /** @var \Cleantalk\Common\Helper\Helper $helper_class */
         $helper_class = Mloader::get('Helper');
 
-        $query = 'INSERT INTO `' . $db__table__data . '` (network, mask, status) VALUES ';
+        $query = 'INSERT INTO ' . $db__table__data . ' (network, mask, status) VALUES ';
 
         //Exclusion for servers IP (SERVER_ADDR)
         if ( Server::get('HTTP_HOST') ) {
@@ -801,8 +772,8 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
                 //return array('error' => 'RENAME TABLE: MAIN TABLE IS STILL EXISTS: ' . $table_name);
             }
 
-            $alter_res = $db->execute('ALTER TABLE `' . $table_name__temp . '` RENAME `' . $table_name . '`;');
-            if ( ! $alter_res ) {
+            $rename_res = $db->renameTable($table_name__temp, $table_name);
+            if ( !$rename_res ) {
                 return array(
                     'error' => 'RENAME TABLE: FAILED TO RENAME: ' . $table_name
                         . ' DB Error: ' . $db->getLastError()

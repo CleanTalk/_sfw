@@ -708,7 +708,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
             // Delete temporary table if it exists, to avoid errors after bad db migration
             if ( $db->isTableExists($table_name__temp) && !$db->execute('DROP TABLE ' . $table_name__temp . ';') ) {
                 return array(
-                    'error' => 'DELETE TEMP TABLES: COULD NOT DROP ' . $table_name__temp 
+                    'error' => 'DELETE TEMP TABLES: COULD NOT DROP ' . $table_name__temp
                         . ' DB Error: ' . $db->getLastError()
                 );
             }

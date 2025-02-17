@@ -705,16 +705,17 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
         foreach ( $table_names as $table_name ) {
             $table_name__temp = $table_name . '_temp';
 
-            if ( !$db->execute('CREATE TABLE IF NOT EXISTS `' . $table_name__temp . '` LIKE `' . $table_name . '`;') ) {
+            // Delete temporary table if it exists, to avoid errors after bad db migration
+            if ( $db->isTableExists($table_name__temp) && !$db->execute('DROP TABLE ' . $table_name__temp . ';') ) {
                 return array(
-                    'error' => 'CREATE TEMP TABLES: COULD NOT CREATE ' . $table_name__temp
+                    'error' => 'DELETE TEMP TABLES: COULD NOT DROP ' . $table_name__temp 
                         . ' DB Error: ' . $db->getLastError()
                 );
             }
 
-            if ( !$db->execute('TRUNCATE TABLE `' . $table_name__temp . '`;') ) {
+            if ( !$db->execute('CREATE TABLE `' . $table_name__temp . '` LIKE `' . $table_name . '`;') ) {
                 return array(
-                    'error' => 'CREATE TEMP TABLES: COULD NOT TRUNCATE' . $table_name__temp
+                    'error' => 'CREATE TEMP TABLES: COULD NOT CREATE ' . $table_name__temp
                         . ' DB Error: ' . $db->getLastError()
                 );
             }

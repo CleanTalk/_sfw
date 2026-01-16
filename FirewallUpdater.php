@@ -125,6 +125,9 @@ class FirewallUpdater
             ['test' => 'test']
         );
 
+        // Clear errors here
+        $this->fwStats->errors = [];
+
         // Set a new update ID and an update time start
         $this->fwStats->calls = 0;
         $this->fwStats->updating_id = md5((string)rand(0, 100000));

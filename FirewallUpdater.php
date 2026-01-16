@@ -1001,9 +1001,11 @@ class FirewallUpdater
     private function saveSfwUpdateError(SfwUpdateException $e)
     {
         $fw_stats = Firewall::getFwStats();
-        $fw_stats->errors[] = $e->getMessage();
+        $fw_stats->errors[time()] = $e->getMessage();
         Firewall::saveFwStats($fw_stats);
-        error_log($e->getMessage());
+        if ( $this->debug ) {
+            error_log($e->getMessage());
+        }
     }
 
     /**

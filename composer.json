@@ -1,16 +1,14 @@
 {
   "name": "cleantalk/firewall",
   "description": "CleanTalk APBCT `SFW` classes",
-  "type": "cleantalk-apbct-lib",
   "authors": [
     {
       "name": "CleanTalk Team",
-      "email": "support@cleantalk.org"
+      "email": "plugins@cleantalk.org"
     }
   ],
   "license": "GPL-3.0-or-later",
   "require": {
-    "cleantalk/apbct-installer": "*",
     "cleantalk/mloader": "*",
     "cleantalk/variables": "*",
     "cleantalk/cleaner": "*",
@@ -30,11 +28,6 @@
     "squizlabs/php_codesniffer": "3.*",
     "phpcompatibility/php-compatibility": "^9.3"
   },
-  "config": {
-    "allow-plugins": {
-      "cleantalk/apbct-installer": true
-    }
-  },
   "scripts": {
     "test": [
       "vendor/bin/phpunit --configuration tests/phpunit.xml",
@@ -43,5 +36,10 @@
       "vendor/bin/psalm --no-cache --config=tests/psalm.xml",
       "vendor/bin/psalm --no-cache --config=tests/psalm.xml --taint-analysis"
     ]
+  },
+  "autoload": {
+    "psr-4": {
+      "Cleantalk\\Common\\Firewall\\": "/"
+    }
   }
 }

@@ -41,5 +41,10 @@
     "psr-4": {
       "Cleantalk\\Common\\Firewall\\": "/"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "cleantalk/apbct-installer": true
+    }
   }
 }

@@ -286,6 +286,8 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
                 $request_uri = preg_replace('%sfw_test_ip=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}&?%', '', $request_uri);
             }
 
+            $request_uri = htmlspecialchars($request_uri, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
             // @ToDo not implemented yet
             // Custom Logo
             //$custom_logo_img = '';

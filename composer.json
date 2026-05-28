@@ -24,7 +24,7 @@
   },
   "require-dev": {
     "vimeo/psalm": "^4.8",
-    "phpunit/phpunit": "^7.5",
+    "phpunit/phpunit": "^8.5.52",
     "squizlabs/php_codesniffer": "3.*",
     "phpcompatibility/php-compatibility": "^9.3"
   },
@@ -40,6 +40,11 @@
   "autoload": {
     "psr-4": {
       "Cleantalk\\Common\\Firewall\\": "/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "cleantalk/apbct-installer": true
     }
   }
 }

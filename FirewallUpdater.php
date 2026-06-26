@@ -306,7 +306,6 @@ class FirewallUpdater
                     foreach ( $file_urls as $value ) {
                         $urls[] = $value[0];
                     }
-
                 } else {
                     throw new SfwUpdateException('getMultifiles: common: ' . $file_urls['error']);
                 }

@@ -178,7 +178,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
             if ( !empty($db_results) ) {
                 // Personal lists have priority over common lists
                 // Sort: personal entries first
-                usort($db_results, function($a, $b) {
+                usort($db_results, function ($a, $b) {
                     return (int)$b['is_personal'] - (int)$a['is_personal'];
                 });
 
@@ -577,7 +577,7 @@ class Sfw extends \Cleantalk\Common\Firewall\FirewallModule
         return $result;
     }
 
-public static function directUpdateGetBlackListsPersonal($api_key)
+    public static function directUpdateGetBlackListsPersonal($api_key)
     {
         /** @var \Cleantalk\Common\Api\Api $api_class */
         $api_class = Mloader::get('Api');

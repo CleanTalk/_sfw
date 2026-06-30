@@ -985,7 +985,7 @@ class FirewallUpdater
             }
 
             /**
-             * UPDATING PERSONAL BLACK LIST
+             * UPDATING PERSONAL LIST
              */
             $result_personal = \Cleantalk\Common\Firewall\Modules\Sfw::directUpdateGetBlackListsPersonal($this->api_key);
             if ( empty($result_personal['error']) && !empty($result_personal['blacklist']) ) {

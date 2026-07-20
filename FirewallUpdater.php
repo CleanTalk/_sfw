@@ -455,6 +455,15 @@ class FirewallUpdater
             throw new SfwUpdateException('createTempTables: ' . $result['error']);
         }
 
+        // Preparing temporary tables for personal SFW
+        $result = \Cleantalk\Common\Firewall\Modules\Sfw::createTempTables(
+            $db_obj,
+            $db_obj->prefix . APBCT_TBL_FIREWALL_DATA_PERSONAL
+        );
+        if ( !empty($result['error']) ) {
+            throw new SfwUpdateException('createTempTables personal: ' . $result['error']);
+        }
+
         return array(
             'next_stage' => array(
                 'name' => [self::class, 'processFiles'],
